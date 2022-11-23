@@ -1,7 +1,5 @@
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 import debug.Debug;
 import debug.Debug.Color;
@@ -28,8 +26,8 @@ public class App {
         }
     }
 
-    public static List<Finding> bruteForceSearch(String string, String substring) {
-        List<Finding> findings = new ArrayList<>();
+    public static Vec<Finding> bruteForceSearch(String string, String substring) {
+        Vec<Finding> findings = new Vec<>();
         int comparisons = 0;
 
         for (int i = 0; i < string.length() - substring.length(); i++) {
@@ -41,14 +39,14 @@ public class App {
             }
 
             if (j == substring.length())
-                findings.add(new Finding(i, comparisons));
+                findings.push(new Finding(i, comparisons));
         }
 
         return findings;
     }
 
-    public static List<Finding> kmpSearch(String string, String substring) {
-        List<Finding> findings = new ArrayList<>();
+    public static Vec<Finding> kmpSearch(String string, String substring) {
+        Vec<Finding> findings = new Vec<>();
         int comparisons = 0;
 
         int[] lps = new int[substring.length()];
@@ -80,7 +78,7 @@ public class App {
             }
 
             if (j == substring.length()) {
-                findings.add(new Finding(i - j, comparisons));
+                findings.push(new Finding(i - j, comparisons));
                 j = lps[j - 1];
             } else {
                 if (i < string.length() && string.charAt(i) != substring.charAt(j)) {
@@ -97,7 +95,6 @@ public class App {
 }
 
 record Finding(int index, long comparisons) {
-
     @Override
     public String toString() {
         return "index " + index + " (" + comparisons + " comparisons)";
